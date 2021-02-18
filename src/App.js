@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import AuthProvider from "./contexts/AuthContext"
+import { AppRouter } from "./routes/AppRouter"
+import { BrowserRouter } from "react-router-dom"
+import { Navbar } from "./pages/Includes/Navbar"
 
-function App() {
+export const App = () => {
+  if (null === localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify([{
+          'email': 'super@admin.com',
+          'password': 'admin',
+          'role': 'super_admin'
+      }]))
+  }
+
+  if (null === localStorage.getItem('articles')) {
+      localStorage.setItem('articles', JSON.stringify([]))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <AuthProvider>
+        <BrowserRouter>
+            <Navbar />
+            <AppRouter />
+        </BrowserRouter>
+    </AuthProvider>
+  )
 }
-
-export default App;
